@@ -236,11 +236,10 @@ impl PublicKey {
 
     #[inline]
     /// Combine two public keys
-    pub fn combine(&self, other: PublicKey) -> Result<PublicKey, Error> {
-        let s = Secp256k1::with_caps(crate::ContextFlag::None);
+    pub fn combine(&self, secp: &Secp256k1, other: PublicKey) -> Result<PublicKey, Error> {
         let mut retkey = PublicKey::new();
         unsafe {
-            if ffi::secp256k1_ec_pubkey_combine(s.ctx, &mut retkey.0 as *mut _,
+            if ffi::secp256k1_ec_pubkey_combine(secp.ctx, &mut retkey.0 as *mut _,
                                                   [self.as_ptr(), other.as_ptr()].as_ptr(), 2) == 1 {
                 Ok(retkey)
             } else {
@@ -251,10 +250,9 @@ impl PublicKey {
 
     #[inline]
     /// Negate public key
-    pub fn negate(mut self) -> PublicKey {
-        let s = Secp256k1::with_caps(crate::ContextFlag::None);
+    pub fn negate(mut self, secp: &Secp256k1) -> PublicKey {
         unsafe {
-            let err = ffi::secp256k1_ec_pubkey_negate(s.ctx, &mut self.0 as *mut _);
+            let err = ffi::secp256k1_ec_pubkey_negate(secp.ctx, &mut self.0 as *mut _);
             debug_assert_eq!(err, 1);
         }
         self
