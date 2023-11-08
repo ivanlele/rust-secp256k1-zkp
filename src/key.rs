@@ -235,6 +235,32 @@ impl PublicKey {
     }
 
     #[inline]
+    /// Combine two public keys
+    pub fn combine(&self, other: PublicKey) -> Result<PublicKey, Error> {
+        let s = Secp256k1::with_caps(crate::ContextFlag::None);
+        let mut retkey = PublicKey::new();
+        unsafe {
+            if ffi::secp256k1_ec_pubkey_combine(s.ctx, &mut retkey.0 as *mut _,
+                                                  [self.as_ptr(), other.as_ptr()].as_ptr(), 2) == 1 {
+                Ok(retkey)
+            } else {
+                Err(InvalidPublicKey)
+            }
+        }
+    }
+
+    #[inline]
+    /// Negate public key
+    pub fn negate(mut self) -> PublicKey {
+        let s = Secp256k1::with_caps(crate::ContextFlag::None);
+        unsafe {
+            let err = ffi::secp256k1_ec_pubkey_negate(s.ctx, &mut self.0 as *mut _);
+            debug_assert_eq!(err, 1);
+        }
+        self
+    }
+
+    #[inline]
     /// Serialize the key as a byte-encoded pair of values. In compressed form
     /// the y-coordinate is represented by only a single bit, as x determines
     /// it up to one bit.

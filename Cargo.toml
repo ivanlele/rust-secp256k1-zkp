@@ -1,6 +1,6 @@
 [package]
 
-name = "grin_secp256k1zkp"
+name = "secp256k1zkp"
 version = "0.7.12"
 authors = [ "Grin Developers <mimblewimble@lists.launchpad.net>",
             "Dawid Ciężarkiewicz <dpc@ucore.info>",

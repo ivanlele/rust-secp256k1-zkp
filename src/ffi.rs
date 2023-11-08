@@ -376,6 +376,10 @@ extern "C" {
                                        ins: *const *const PublicKey,
                                        n: c_int)
                                        -> c_int;
+    
+    pub fn secp256k1_ec_pubkey_negate(cx: *const Context,
+                                      pk: *mut PublicKey)
+                                      -> c_int;
 
     pub fn secp256k1_ec_privkey_tweak_inv(cx: *const Context,
                                           sk: *mut c_uchar)
