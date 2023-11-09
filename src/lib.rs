@@ -70,7 +70,7 @@ pub use key::PublicKey;
 pub struct RecoveryId(i32);
 
 /// An ECDSA signature
-#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Hash)]
 pub struct Signature(ffi::Signature);
 
 impl std::convert::AsRef<[u8]> for Signature {
