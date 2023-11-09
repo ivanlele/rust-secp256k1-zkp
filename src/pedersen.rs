@@ -123,7 +123,7 @@ impl Commitment {
 }
 
 /// A range proof. Typically much larger in memory that the above (~5k).
-#[derive(Copy)]
+#[derive(Copy, Eq, Hash)]
 pub struct RangeProof {
 	/// The proof itself, at most 5134 bytes long
 	pub proof: [u8; constants::MAX_PROOF_SIZE],
